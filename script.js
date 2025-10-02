@@ -22,12 +22,35 @@ const questions = [
   }
 ];
 
-// Initialize laptop images to locked state
+// Folder path for images
+const ASSET_PATH = "assets/";
+
+// Initialize laptops to locked state
 function initLaptops() {
   laptops.forEach((_, idx) => {
-    document.getElementById("laptop"+idx).src = "assets/locked.jpg";
-    document.getElementById("status"+idx).innerHTML = "🔒 Locked";
+    setLaptopImage(idx);
+    setLaptopStatus(idx);
   });
+}
+
+// Set laptop image based on locked/unlocked state
+function setLaptopImage(index) {
+  const img = document.getElementById("laptop"+index);
+  if(!img) return;
+  
+  const filename = laptops[index] ? "unlocked.jpg" : "locked.jpg";
+  const path = ASSET_PATH + filename;
+
+  img.src = path;
+  img.onerror = () => console.error(`Image not found: ${path}`);
+}
+
+// Set status text for a laptop
+function setLaptopStatus(index) {
+  const statusEl = document.getElementById("status"+index);
+  if(!statusEl) return;
+
+  statusEl.innerHTML = laptops[index] ? "✅ Unlocked" : "🔒 Locked";
 }
 
 function openLaptop(index) {
@@ -56,11 +79,10 @@ function checkAnswer(qIndex, choice) {
     laptops[qIndex] = true;
     clues.push(q.clue);
 
-    // Update image to unlocked
-    document.getElementById("laptop"+qIndex).src = "assets/unlocked.jpg";
-    document.getElementById("status"+qIndex).innerHTML = "✅ Unlocked";
+    setLaptopImage(qIndex);
+    setLaptopStatus(qIndex);
+
     document.getElementById("clueList").innerHTML += `<div>${q.clue}</div>`;
-    
     document.getElementById("questionBox").classList.add("hidden");
 
     if(laptops.every(l => l)) {
@@ -74,5 +96,5 @@ function checkAnswer(qIndex, choice) {
   }
 }
 
-// Call this on page load to set all laptops to locked images
+// Call on page load
 initLaptops();
