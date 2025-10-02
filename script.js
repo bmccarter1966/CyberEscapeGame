@@ -25,10 +25,10 @@ const questions = [
 // Folder path for images
 const ASSET_PATH = "assets/";
 
-// Use unique filenames to avoid caching issues
+// Unique filenames to avoid caching issues
 const IMAGES = {
-  locked: "locked_v2.jpg",   // rename your locked image to locked_v2.jpg
-  unlocked: "unlocked_v2.jpg" // rename unlocked too for consistency
+  locked: "locked_v2.jpg",   
+  unlocked: "unlocked_v2.jpg"
 };
 
 // Initialize laptops to locked state
@@ -39,13 +39,13 @@ function initLaptops() {
   });
 }
 
-// Set laptop image based on locked/unlocked state
+// Set laptop image based on locked/unlocked state with cache-buster
 function setLaptopImage(index) {
   const img = document.getElementById("laptop"+index);
   if(!img) return;
 
   const filename = laptops[index] ? IMAGES.unlocked : IMAGES.locked;
-  const path = ASSET_PATH + filename;
+  const path = ASSET_PATH + filename + "?t=" + new Date().getTime(); // cache-buster
 
   img.src = path;
 
