@@ -22,6 +22,14 @@ const questions = [
   }
 ];
 
+// Initialize laptop images to locked state
+function initLaptops() {
+  laptops.forEach((_, idx) => {
+    document.getElementById("laptop"+idx).src = "assets/locked.jpg";
+    document.getElementById("status"+idx).innerHTML = "🔒 Locked";
+  });
+}
+
 function openLaptop(index) {
   if(laptops[index]) {
     alert("✅ This laptop is already unlocked!");
@@ -34,6 +42,7 @@ function loadQuestion(i) {
   document.getElementById("questionBox").classList.remove("hidden");
   const q = questions[i];
   document.getElementById("question").innerHTML = q.q;
+  
   let answersHTML = "";
   q.a.forEach((ans, idx) => {
     answersHTML += `<button onclick="checkAnswer(${i},${idx})">${ans}</button>`;
@@ -47,6 +56,7 @@ function checkAnswer(qIndex, choice) {
     laptops[qIndex] = true;
     clues.push(q.clue);
 
+    // Update image to unlocked
     document.getElementById("laptop"+qIndex).src = "assets/unlocked.jpg";
     document.getElementById("status"+qIndex).innerHTML = "✅ Unlocked";
     document.getElementById("clueList").innerHTML += `<div>${q.clue}</div>`;
@@ -63,3 +73,6 @@ function checkAnswer(qIndex, choice) {
     alert("❌ Wrong answer! The lock stays closed.");
   }
 }
+
+// Call this on page load to set all laptops to locked images
+initLaptops();
