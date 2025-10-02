@@ -47,7 +47,7 @@ function checkAnswer(qIndex, choice) {
     laptops[qIndex] = true;
     clues.push(q.clue);
 
-    document.getElementById("laptop"+qIndex).src = "assets/unlocked.png";
+    document.getElementById("laptop"+qIndex).src = "assets/unlocked.jpg";
     document.getElementById("status"+qIndex).innerHTML = "✅ Unlocked";
     document.getElementById("clueList").innerHTML += `<div>${q.clue}</div>`;
     
