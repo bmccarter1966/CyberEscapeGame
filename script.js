@@ -25,6 +25,12 @@ const questions = [
 // Folder path for images
 const ASSET_PATH = "assets/";
 
+// Use unique filenames to avoid caching issues
+const IMAGES = {
+  locked: "locked_v2.jpg",   // rename your locked image to locked_v2.jpg
+  unlocked: "unlocked_v2.jpg" // rename unlocked too for consistency
+};
+
 // Initialize laptops to locked state
 function initLaptops() {
   laptops.forEach((_, idx) => {
@@ -37,12 +43,17 @@ function initLaptops() {
 function setLaptopImage(index) {
   const img = document.getElementById("laptop"+index);
   if(!img) return;
-  
-  const filename = laptops[index] ? "unlocked.jpg" : "locked.jpg";
+
+  const filename = laptops[index] ? IMAGES.unlocked : IMAGES.locked;
   const path = ASSET_PATH + filename;
 
   img.src = path;
-  img.onerror = () => console.error(`Image not found: ${path}`);
+
+  // Fallback if image fails to load
+  img.onerror = () => {
+    console.error(`Image not found: ${path}`);
+    img.src = "https://via.placeholder.com/150?text=Image+Missing";
+  }
 }
 
 // Set status text for a laptop
