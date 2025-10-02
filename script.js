@@ -7,6 +7,7 @@ const questions = [
   { q: "Strong passwords should include?", a: ["Only numbers", "Mix of letters, numbers & symbols", "Your birthday"], correct: 1, clue: "B" }
 ];
 
+// Path relative to index.html
 const ASSET_PATH = "assets/";
 const IMAGES = { locked: "locked_v2.jpg", unlocked: "unlocked_v2.jpg" };
 
@@ -64,12 +65,11 @@ function checkAnswer(qIndex, choice) {
     const laptopContainer = document.querySelector(`#laptop${qIndex}`).parentElement;
     laptopContainer.classList.add("flip");
 
-    // Halfway through the animation, change image
     setTimeout(() => {
       setLaptopImage(qIndex);
       setLaptopStatus(qIndex);
       laptopContainer.classList.remove("flip"); // allow future flips
-    }, 300); // 0.3s delay (animation duration is 0.6s)
+    }, 300); // half of 0.6s animation
 
     // Update clues and hide question
     document.getElementById("clueList").innerHTML += `<div>${q.clue}</div>`;
