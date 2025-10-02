@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Escape Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game">
+    <h1>🔐 Cyber Escape Room</h1>
+    <p>You are locked in by hackers. Unlock all the laptops by answering cyber trivia!</p>
+
+    <div id="room">
+      <!-- 3 laptops to unlock -->
+      <div class="laptop" onclick="openLaptop(0)">
+        <img src="assets/laptop.png" id="laptop0">
+        <div class="status" id="status0">🔒 Locked</div>
+      </div>
+      <div class="laptop" onclick="openLaptop(1)">
+        <img src="assets/laptop.png" id="laptop1">
+        <div class="status" id="status1">🔒 Locked</div>
+      </div>
+      <div class="laptop" onclick="openLaptop(2)">
+        <img src="assets/laptop.png" id="laptop2">
+        <div class="status" id="status2">🔒 Locked</div>
+      </div>
+    </div>
+
+    <div id="questionBox" class="hidden">
+      <h2 id="question"></h2>
+      <div id="answers"></div>
+    </div>
+
+    <div id="clues">
+      <h3>Collected Clues:</h3>
+      <div id="clueList"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #000 url("assets/hacker-bg.jpg") no-repeat center center/cover;
+  color: #fff;
+  text-align: center;
+}
+
+#game {
+  background: rgba(0,0,0,0.7);
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #0ff;
+  border-radius: 12px;
+  max-width: 900px;
+}
+
+#room {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+}
+
+.laptop {
+  text-align: center;
+  cursor: pointer;
+}
+
+.laptop img {
+  width: 150px;
+  transition: transform 0.2s;
+}
+
+.laptop img:hover {
+  transform: scale(1.05);
+}
+
+.status {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+#questionBox {
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid #0ff;
+  border-radius: 10px;
+  background: rgba(20,20,20,0.9);
+}
+
+button {
+  padding: 10px 20px;
+  margin: 8px;
+  border: none;
+  border-radius: 6px;
+  background: #0ff;
+  color: #000;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #09a;
+  color: #fff;
+}
+
+.hidden {
+  display: none;
+}
+
+#clues {
+  margin-top: 20px;
+}
+
+#clueList {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 20px;
+}
