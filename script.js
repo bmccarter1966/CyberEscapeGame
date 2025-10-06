@@ -24,7 +24,7 @@ function setLaptopImage(index) {
   const img = document.getElementById("laptop"+index);
   if(!img) return;
 
-  const filename = laptops[index] ? IMAGES.unlocked : IMAGES.locked;
+  const filename = laptops[index] ? IMAGES.unlocked_v2 : IMAGES.locked_v2;
   img.src = ASSET_PATH + filename + "?v=" + new Date().getTime();
   img.onerror = () => { 
     console.error("Failed to load image: " + filename); 
