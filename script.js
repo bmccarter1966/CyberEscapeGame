@@ -24,13 +24,12 @@ function setLaptopImage(index) {
   const img = document.getElementById("laptop" + index);
   if (!img) return;
 
-  // ✅ fixed reference
+  // ✅ Fixed property references here
   const filename = laptops[index] ? IMAGES.unlocked : IMAGES.locked;
-
   img.src = ASSET_PATH + filename + "?v=" + new Date().getTime();
-  img.onerror = () => {
-    console.error("Failed to load image: " + filename);
-    img.src = "https://via.placeholder.com/150?text=Image+Missing";
+  img.onerror = () => { 
+    console.error("Failed to load image: " + filename); 
+    img.src = "https://via.placeholder.com/150?text=Image+Missing"; 
   };
 }
 
@@ -43,9 +42,9 @@ function setLaptopStatus(index) {
 
 // Laptop click
 function openLaptop(index) {
-  if (laptops[index]) {
-    alert("✅ This laptop is already unlocked!");
-    return;
+  if (laptops[index]) { 
+    alert("✅ This laptop is already unlocked!"); 
+    return; 
   }
   loadQuestion(index);
 }
@@ -55,7 +54,9 @@ function loadQuestion(i) {
   document.getElementById("questionBox").classList.remove("hidden");
   const q = questions[i];
   document.getElementById("question").innerHTML = q.q;
-  const answersHTML = q.a.map((ans, idx) => `<button onclick="checkAnswer(${i},${idx})">${ans}</button>`).join("");
+  const answersHTML = q.a.map((ans, idx) => 
+    `<button onclick="checkAnswer(${i},${idx})">${ans}</button>`
+  ).join("");
   document.getElementById("answers").innerHTML = answersHTML;
 }
 
@@ -81,8 +82,12 @@ function checkAnswer(qIndex, choice) {
     document.getElementById("questionBox").classList.add("hidden");
 
     // Check if all laptops unlocked
-    if (laptops.every(l => l))
-      setTimeout(() => alert("🎉 You escaped! The final code is: " + clues.join("")), 500);
+    if (laptops.every(l => l)) {
+      setTimeout(() => {
+        alert("🎉 You escaped! The final code is: " + clues.join(""));
+      }, 500);
+    }
+
   } else {
     alert("❌ Wrong answer! The lock stays closed.");
   }
