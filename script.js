@@ -9,7 +9,7 @@ const questions = [
 
 // Path relative to index.html
 const ASSET_PATH = "assets/";
-const IMAGES = { locked: "locked.jpg", unlocked: "unlocked.jpg" };
+const IMAGES = { locked: "locked_v2.jpg", unlocked: "unlocked_v2.jpg" };
 
 // Initialize laptops
 function initLaptops() {
