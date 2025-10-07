@@ -8,7 +8,7 @@ const questions = [
 ];
 
 // Path relative to index.html
-const ASSET_PATH = "assets/";
+const ASSET_PATH = "./assets/";
 const IMAGES = { locked: "locked_v2.jpg", unlocked: "unlocked_v2.jpg" };
 
 // Initialize laptops
@@ -21,27 +21,32 @@ function initLaptops() {
 
 // Set laptop image with cache-buster
 function setLaptopImage(index) {
-  const img = document.getElementById("laptop"+index);
-  if(!img) return;
+  const img = document.getElementById("laptop" + index);
+  if (!img) return;
 
-  const filename = laptops[index] ? IMAGES.unlocked_v2 : IMAGES.locked_v2;
+  // ✅ fixed reference
+  const filename = laptops[index] ? IMAGES.unlocked : IMAGES.locked;
+
   img.src = ASSET_PATH + filename + "?v=" + new Date().getTime();
-  img.onerror = () => { 
-    console.error("Failed to load image: " + filename); 
-    img.src = "https://via.placeholder.com/150?text=Image+Missing"; 
-  }
+  img.onerror = () => {
+    console.error("Failed to load image: " + filename);
+    img.src = "https://via.placeholder.com/150?text=Image+Missing";
+  };
 }
 
 // Set laptop status text
 function setLaptopStatus(index) {
-  const statusEl = document.getElementById("status"+index);
-  if(!statusEl) return;
+  const statusEl = document.getElementById("status" + index);
+  if (!statusEl) return;
   statusEl.innerHTML = laptops[index] ? "✅ Unlocked" : "🔒 Locked";
 }
 
 // Laptop click
 function openLaptop(index) {
-  if(laptops[index]) { alert("✅ This laptop is already unlocked!"); return; }
+  if (laptops[index]) {
+    alert("✅ This laptop is already unlocked!");
+    return;
+  }
   loadQuestion(index);
 }
 
@@ -57,7 +62,7 @@ function loadQuestion(i) {
 // Check answer
 function checkAnswer(qIndex, choice) {
   const q = questions[qIndex];
-  if(choice === q.correct) {
+  if (choice === q.correct) {
     laptops[qIndex] = true;
     clues.push(q.clue);
 
@@ -76,9 +81,8 @@ function checkAnswer(qIndex, choice) {
     document.getElementById("questionBox").classList.add("hidden");
 
     // Check if all laptops unlocked
-    if(laptops.every(l => l)) 
+    if (laptops.every(l => l))
       setTimeout(() => alert("🎉 You escaped! The final code is: " + clues.join("")), 500);
-
   } else {
     alert("❌ Wrong answer! The lock stays closed.");
   }
