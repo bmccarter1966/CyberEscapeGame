@@ -1,97 +1,78 @@
+// Game state
 const laptops = [false, false, false]; // unlocked state
 const clues = [];
 
 const questions = [
-  { q: "What should you do if you get a suspicious email?", a: ["Click the link", "Delete or report it", "Reply immediately"], correct: 1, clue: "C" },
-  { q: "Which is safest for remote work?", a: ["Public WiFi", "VPN", "Random hotspot"], correct: 1, clue: "Y" },
-  { q: "Strong passwords should include?", a: ["Only numbers", "Mix of letters, numbers & symbols", "Your birthday"], correct: 1, clue: "B" }
+  {
+    q: "What should you do if you get a suspicious email?",
+    a: "Report it"
+  },
+  {
+    q: "What is a strong password?",
+    a: "Complex and unique"
+  },
+  {
+    q: "What does MFA stand for?",
+    a: "Multi-factor authentication"
+  }
 ];
 
-// Path relative to index.html
-const ASSET_PATH = "./assets/";
-const IMAGES = { locked: "locked_v2.jpg", unlocked: "unlocked_v2.jpg" };
+// --- Correct image paths ---
+const lockedImg = "assets/locked_v2.jpg";
+const unlockedImg = "assets/unlocked_v2.jpg";
 
-// Initialize laptops
-function initLaptops() {
-  laptops.forEach((_, idx) => {
-    setLaptopImage(idx);
-    setLaptopStatus(idx);
+// Render laptops
+function renderLaptops() {
+  const container = document.getElementById("laptops");
+  container.innerHTML = "";
+
+  laptops.forEach((unlocked, index) => {
+    const img = document.createElement("img");
+    img.src = unlocked ? unlockedImg : lockedImg;
+    img.alt = unlocked ? "Unlocked" : "Locked";
+    img.classList.add("laptop");
+
+    // Flip animation effect on click
+    img.addEventListener("click", () => handleLaptopClick(index, img));
+
+    container.appendChild(img);
   });
 }
 
-// Set laptop image with cache-buster
-function setLaptopImage(index) {
-  const img = document.getElementById("laptop" + index);
-  if (!img) return;
+// Handle clicking a laptop
+function handleLaptopClick(index, imgElement) {
+  if (laptops[index]) return; // already unlocked
 
-  // ✅ Fixed property references here
-  const filename = laptops[index] ? IMAGES.unlocked : IMAGES.locked;
-  img.src = ASSET_PATH + filename + "?v=" + new Date().getTime();
-  img.onerror = () => { 
-    console.error("Failed to load image: " + filename); 
-    img.src = "https://via.placeholder.com/150?text=Image+Missing"; 
-  };
-}
+  const userAnswer = prompt(questions[index].q);
+  if (!userAnswer) return;
 
-// Set laptop status text
-function setLaptopStatus(index) {
-  const statusEl = document.getElementById("status" + index);
-  if (!statusEl) return;
-  statusEl.innerHTML = laptops[index] ? "✅ Unlocked" : "🔒 Locked";
-}
-
-// Laptop click
-function openLaptop(index) {
-  if (laptops[index]) { 
-    alert("✅ This laptop is already unlocked!"); 
-    return; 
-  }
-  loadQuestion(index);
-}
-
-// Load question
-function loadQuestion(i) {
-  document.getElementById("questionBox").classList.remove("hidden");
-  const q = questions[i];
-  document.getElementById("question").innerHTML = q.q;
-  const answersHTML = q.a.map((ans, idx) => 
-    `<button onclick="checkAnswer(${i},${idx})">${ans}</button>`
-  ).join("");
-  document.getElementById("answers").innerHTML = answersHTML;
-}
-
-// Check answer
-function checkAnswer(qIndex, choice) {
-  const q = questions[qIndex];
-  if (choice === q.correct) {
-    laptops[qIndex] = true;
-    clues.push(q.clue);
-
-    // Flip animation
-    const laptopContainer = document.querySelector(`#laptop${qIndex}`).parentElement;
-    laptopContainer.classList.add("flip");
-
-    setTimeout(() => {
-      setLaptopImage(qIndex);
-      setLaptopStatus(qIndex);
-      laptopContainer.classList.remove("flip"); // allow future flips
-    }, 300); // half of 0.6s animation
-
-    // Update clues and hide question
-    document.getElementById("clueList").innerHTML += `<div>${q.clue}</div>`;
-    document.getElementById("questionBox").classList.add("hidden");
-
-    // Check if all laptops unlocked
-    if (laptops.every(l => l)) {
-      setTimeout(() => {
-        alert("🎉 You escaped! The final code is: " + clues.join(""));
-      }, 500);
-    }
-
+  if (userAnswer.trim().toLowerCase() === questions[index].a.toLowerCase()) {
+    laptops[index] = true;
+    clues.push(questions[index].a[0]); // simple clue letter
+    flipImage(imgElement, unlockedImg);
+    renderClues();
   } else {
-    alert("❌ Wrong answer! The lock stays closed.");
+    alert("Incorrect! Try again.");
   }
 }
 
-// Initialize on page load
-initLaptops();
+// Flip transition for unlock
+function flipImage(imgElement, newSrc) {
+  imgElement.style.transition = "transform 0.6s";
+  imgElement.style.transform = "rotateY(180deg)";
+
+  setTimeout(() => {
+    imgElement.src = newSrc;
+    imgElement.style.transform = "rotateY(0deg)";
+  }, 300);
+}
+
+// Show collected clues
+function renderClues() {
+  const cluesContainer = document.getElementById("clues");
+  cluesContainer.textContent = clues.join(" ");
+}
+
+// Initialize game
+renderLaptops();
+renderClues();
