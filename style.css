@@ -1,38 +1,42 @@
 /* =========================
-   GLOBAL / IFRAME SAFETY
+   GLOBAL / CONTAINER BASED
    ========================= */
 
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Prevent right-side cut-off in iframes */
-}
-
-body {
+:root{
+  --bg1:#000;
+  --bg2:#111;
+  --card:#111;
+  --accent:#0ff;
+  --muted:#aaa;
+  --radius:12px;
+  --shadow:0 6px 18px rgba(0,255,255,0.2);
   font-family: Arial, sans-serif;
-  background: #000 url("assets/hacker-bg.jpg") no-repeat center center / cover;
-  color: #fff;
-  text-align: center;
 }
 
-/* =========================
-   MAIN GAME CONTAINER
-   ========================= */
+*{ box-sizing:border-box; }
 
-#game {
-  background: rgba(0, 0, 0, 0.7);
-  margin: 16px auto;
-  padding: 20px;
-  border: 2px solid #0ff;
-  border-radius: 12px;
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+  background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+  color:#fff;
+  text-align:center;
+  overflow-x:hidden; /* prevent clipping */
+}
 
-  width: 100%;
-  max-width: 700px; /* narrowed further to fit SharePoint embeds */
+/* Container centers page content for embed */
+.container {
+  width:100%;
+  max-width:820px;  /* safe for SharePoint iframe */
+  margin:0 auto;
+  padding:20px;
+  background: rgba(0,0,0,0.7);
+  border:2px solid var(--accent);
+  border-radius:var(--radius);
 }
 
 /* =========================
@@ -40,132 +44,102 @@ body {
    ========================= */
 
 #room {
-  display: flex;
+  display:flex;
   justify-content: space-evenly;
-  align-items: center;
-  flex-wrap: wrap;        /* Allows wrapping in narrow iframes */
-  gap: 12px;              /* slightly smaller gap to save horizontal space */
-  margin: 20px 0;
-  width: 100%;
+  align-items:center;
+  flex-wrap: wrap;
+  gap:12px;
+  margin:20px 0;
+  width:100%;
 }
 
 .laptop {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  perspective: 800px;
-  flex: 1 1 120px;        /* shrink laptops on narrow widths */
-  max-width: 140px;       /* prevents them from overflowing */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  cursor:pointer;
+  perspective:800px;
+  flex:1 1 100px;
+  max-width:140px;
 }
 
 .laptop img {
-  width: 100%;
-  max-width: 120px;       /* ensures it scales down inside container */
-  height: auto;
+  width:100%;
+  max-width:120px;
+  height:auto;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
 
-.laptop img:hover {
-  transform: scale(1.05);
-}
-
-.laptop.flip img {
-  transform: rotateY(180deg);
-}
+.laptop img:hover { transform: scale(1.05); }
+.laptop.flip img { transform: rotateY(180deg); }
 
 .status {
-  margin-top: 6px;
-  font-size: 14px;
-  word-wrap: break-word; /* prevent long text from overflowing */
+  margin-top:6px;
+  font-size:14px;
+  word-wrap:break-word;
 }
 
 /* =========================
-   QUESTION / UI ELEMENTS
+   QUESTION BOX / BUTTONS
    ========================= */
 
 #questionBox {
-  margin: 20px auto;
-  padding: 20px;
-  border: 2px solid #0ff;
-  border-radius: 10px;
-  background: rgba(20, 20, 20, 0.9);
-  max-width: 100%;
-  width: 100%;
+  margin:20px auto;
+  padding:20px;
+  border:2px solid var(--accent);
+  border-radius:var(--radius);
+  background: rgba(20,20,20,0.9);
+  width:100%;
 }
 
 button {
-  padding: 10px 16px;
-  margin: 6px;
-  border: none;
-  border-radius: 6px;
-  background: #0ff;
-  color: #000;
-  cursor: pointer;
-  max-width: 100%;
-  white-space: nowrap;
+  padding:10px 16px;
+  margin:6px;
+  border:none;
+  border-radius:var(--radius);
+  background: var(--accent);
+  color:#000;
+  cursor:pointer;
+  max-width:100%;
 }
 
 button:hover {
-  background: #09a;
-  color: #fff;
+  background:#09a;
+  color:#fff;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display:none; }
 
 /* =========================
    CLUES
    ========================= */
 
 #clues {
-  margin-top: 20px;
+  margin-top:20px;
 }
 
 #clueList {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; /* Prevents horizontal overflow */
-  gap: 8px;
-  font-size: 18px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  font-size:18px;
 }
 
 /* =========================
-   MOBILE & NARROW IFRAME
+   RESPONSIVE / MOBILE
    ========================= */
 
-@media (max-width: 768px) {
-  #game {
-    padding: 16px;
-    margin: 12px auto;
-    max-width: 95%; /* scales down to almost full iframe width */
-  }
-
-  .laptop img {
-    max-width: 90px;
-  }
-
-  button {
-    padding: 8px 12px;
-  }
+@media (max-width:768px){
+  .container{ padding:16px; }
+  .laptop img{ max-width:90px; }
+  button{ padding:8px 12px; }
 }
 
-@media (max-width: 480px) {
-  #game {
-    padding: 14px;
-  }
-
-  .laptop img {
-    max-width: 75px;
-  }
-
-  .status {
-    font-size: 13px;
-  }
-
-  #clueList {
-    font-size: 16px;
-  }
+@media (max-width:480px){
+  .container{ padding:14px; }
+  .laptop img{ max-width:75px; }
+  .status{ font-size:13px; }
+  #clueList{ font-size:16px; }
 }
