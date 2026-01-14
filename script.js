@@ -1,10 +1,11 @@
 const laptops = [false, false, false]; // unlocked state
-const clues = [];
+const clues = [null, null, null];      // store clue letters by laptop index
 
+// Questions with clue letters set to produce B10 in the end
 const questions = [
-  { q: "What should you do if you get a suspicious email?", a: ["Click the link", "Delete or report it", "Reply immediately"], correct: 1, clue: "C" },
-  { q: "Which is safest for remote work?", a: ["Public WiFi", "VPN", "Random hotspot"], correct: 1, clue: "Y" },
-  { q: "Strong passwords should include?", a: ["Only numbers", "Mix of letters, numbers & symbols", "Your birthday"], correct: 1, clue: "B" }
+  { q: "What should you do if you get a suspicious email?", a: ["Click the link", "Delete or report it", "Reply immediately"], correct: 1, clue: "B" },
+  { q: "Which is safest for remote work?", a: ["Public WiFi", "VPN", "Random hotspot"], correct: 1, clue: "1" },
+  { q: "Strong passwords should include?", a: ["Only numbers", "Mix of letters, numbers & symbols", "Your birthday"], correct: 1, clue: "0" }
 ];
 
 // 🔧 Adjust this based on your folder structure
@@ -60,7 +61,7 @@ function checkAnswer(qIndex, choice) {
   const q = questions[qIndex];
   if (choice === q.correct) {
     laptops[qIndex] = true;
-    clues.push(q.clue);
+    clues[qIndex] = q.clue; // store by laptop index
 
     const laptopContainer = document.querySelector(`#laptop${qIndex}`).parentElement;
     laptopContainer.classList.add("flip");
@@ -71,11 +72,18 @@ function checkAnswer(qIndex, choice) {
       laptopContainer.classList.remove("flip");
     }, 300);
 
-    document.getElementById("clueList").innerHTML += `<div>${q.clue}</div>`;
+    // Update clues display in order of laptop indices
+    document.getElementById("clueList").innerHTML = clues
+      .filter(c => c !== null)
+      .map(c => `<div>${c}</div>`).join("");
+
     document.getElementById("questionBox").classList.add("hidden");
 
-    if (laptops.every(l => l))
-      setTimeout(() => alert("🎉 You escaped! The final code is: " + clues.join("")), 500);
+    if (laptops.every(l => l)) {
+      // Build final code in fixed order: B10
+      const finalCode = questions.map(q => q.clue).join("");
+      setTimeout(() => alert("🎉 You escaped! The final code is: " + finalCode), 500);
+    }
 
   } else {
     alert("❌ Wrong answer! The lock stays closed.");
