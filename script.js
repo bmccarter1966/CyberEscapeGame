@@ -82,7 +82,7 @@ function checkAnswer(qIndex, choice) {
     if (laptops.every(l => l)) {
       // Build final code in fixed order: B10
       const finalCode = questions.map(q => q.clue).join("");
-      setTimeout(() => alert("🎉 You escaped! The final code is: " + finalCode), 500);
+      setTimeout(() => alert("🎉 You escaped! The BINGO Callout is: " + finalCode), 500);
     }
 
   } else {
